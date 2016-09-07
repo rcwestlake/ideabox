@@ -53,6 +53,12 @@ h1 span {
   background-color: #045e55;
 }
 
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
 
 @-ms-viewport{
  width: device-width;
