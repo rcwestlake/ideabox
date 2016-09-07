@@ -1,0 +1,14 @@
+body{
+  background-color: red;
+}
+
+font-family: 'Roboto Slab', serif;
+
+font-family: 'Open Sans', sans-serif;
+
+
+
+
+@-ms-viewport{
+ width: device-width;
+}
