@@ -1,12 +1,57 @@
-body{
-  background-color: red;
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
 }
 
-font-family: 'Roboto Slab', serif;
 
-font-family: 'Open Sans', sans-serif;
+body{
+  font-family: 'Open Sans', sans-serif;
+}
 
+h1, h3 {
+  font-family: 'Roboto Slab', serif;
+}
 
+h1 {
+  color: #00a79d;
+}
+
+h1 span {
+  color: #6d6e71;
+}
+
+.header-container {
+  background-color: #e5f3f2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.input-container {
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 60vw;
+}
+
+.title, .body, .save-button {
+  width: 100%;
+}
+
+.save-button {
+  background-color: #00a79d;
+  color: #ffffff;
+  border: none;
+  text-align: center;
+}
+
+.save-button:hover {
+  background-color: #045e55;
+}
 
 
 @-ms-viewport{
