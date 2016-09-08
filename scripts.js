@@ -19,7 +19,7 @@ function store() {
 }
 
 function prependIdeaToList(title, body) {
-  $('.list-container').prepend('<div class="list-item"><li class="title-style">' + title + '<img src="icons/delete.svg" height="20" width="20"></li><li class="body-style">' + body + '</li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
+  $('.list-container').prepend('<div class="list-item" class=' + Idea.id + '><li class="title-style">' + Idea.title + '<img src="icons/delete.svg" height="20" width="20"></li><li class="body-style">' + Idea.body + '</li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
 }
 
 function Idea(title, body) {
