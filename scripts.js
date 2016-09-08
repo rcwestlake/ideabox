@@ -15,7 +15,7 @@ function getUserInput(){
 }
 
 
-function Idea(title, body, id = Date.now()) {
+function Idea(title, body, id) {
   this.title = title;
   this.body = body;
   this.id = id;
@@ -41,7 +41,7 @@ var AllIdeas = {
   },
 
   render: function(title, body, id) {
-    $('.list-container').prepend('<div class="list-item' + " " + id + '"><li class="title-style">' + title + '<img src="icons/delete.svg" height="20" width="20"></li><li class="body-style">' + body + '</li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
+    $('.list-container').prepend('<div class="list-item' + " " + id + '"><li class="title-style"><input value=' + title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + body + '></li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
   }
 
 };
