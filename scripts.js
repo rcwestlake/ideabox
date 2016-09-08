@@ -1,8 +1,10 @@
+$(document).ready(function(){
+  AllIdeas.retrieve();
+});
 
 $('.save-button').on('click', function(){
   var title = $('.title').val();
   var body = $('.body').val();
-  createIdea(title, body);
   AllIdeas.render(title, body);
   AllIdeas.addToArray(title, body);
   AllIdeas.store();
@@ -18,30 +20,34 @@ function getUserInput(){
 function Idea(title, body, id) {
   this.title = title;
   this.body = body;
-  this.id = id;
+  this.id = Date.now();
   this.quality = 'swill';
 }
 
-function createIdea(title, body) {
-  var idea  = new Idea(title, body);
-  console.log(idea);
-}
-
+var ideasArray = [];
 
 var AllIdeas = {
-  ideasArray: [],
 
   addToArray: function(title, body){
-    this.ideasArray.push(new Idea(title, body));
+    debugger;
+    ideasArray.push(new Idea(title, body));
+    this.store();
+    console.log(ideasArray);
     console.log(title);
   },
 
   store: function () {
-    localStorage.setItem('ideasArray', JSON.stringify(this.ideasArray));
+    localStorage.setItem('ideasArray', JSON.stringify(ideasArray));
   },
 
   render: function(title, body, id) {
     $('.list-container').prepend('<div class="list-item' + " " + id + '"><li class="title-style"><input value=' + title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + body + '></li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
+  },
+
+  retrieve: function(title, body){
+    var retrievedArray = localStorage.getItem('ideasArray');
+    JSON.parse(retrievedArray);
+    console.log(JSON.parse(retrievedArray));
   }
 
 };
