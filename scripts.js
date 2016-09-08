@@ -2,8 +2,10 @@ $('.save-button').on('click', function(){
   var title = $('.title').val();
   var body = $('.body').val();
   createIdea(title, body);
-  prependIdeaToList(title, body);
-  store();
+  prependIdeaToList(Idea.title, Idea.body);
+  AllIdeas.addToArray(title, body);
+  AllIdeas.store();
+
 });
 
 function getUserInput(){
@@ -11,12 +13,7 @@ function getUserInput(){
   $('.body').val();
 }
 
-function store() {
-  var stringedTitle = JSON.stringify(title);
-  var stringedBody = JSON.stringify(body);
-  localStorage.setItem('idea', stringedTitle);
-  // localStorage.setItem('body', stringedBody);
-}
+
 
 function prependIdeaToList(title, body) {
   $('.list-container').prepend('<div class="list-item" class=' + Idea.id + '><li class="title-style">' + Idea.title + '<img src="icons/delete.svg" height="20" width="20"></li><li class="body-style">' + Idea.body + '</li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
@@ -33,5 +30,19 @@ function createIdea(title, body) {
   var idea  = new Idea(title, body);
   console.log(idea);
   debugger;
-
 }
+
+
+var AllIdeas = {
+  ideasArray: [],
+
+  store: function () {
+    localStorage.setItem('ideasArray', JSON.stringify(this.ideasArray));
+  },
+
+  addToArray: function(title, body){
+    this.ideasArray.push(new Idea(title, body));
+  }
+
+
+};
