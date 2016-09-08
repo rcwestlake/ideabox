@@ -8,6 +8,7 @@ $('.save-button').on('click', function(){
   AllIdeas.render(title, body);
   AllIdeas.addToArray(title, body);
   AllIdeas.store();
+  AllIdeas.retrieve();
 
 });
 
@@ -29,7 +30,6 @@ var ideasArray = [];
 var AllIdeas = {
 
   addToArray: function(title, body){
-    debugger;
     ideasArray.push(new Idea(title, body));
     this.store();
     console.log(ideasArray);
@@ -44,10 +44,22 @@ var AllIdeas = {
     $('.list-container').prepend('<div class="list-item' + " " + id + '"><li class="title-style"><input value=' + title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + body + '></li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
   },
 
+  // renderStorage: function() {
+  //   for (var i = 0; i < ideasArray.length; i++) {
+  //    //iterate through the ideasArray array.
+        //identify the individual titles, body, id, buttons, and quality for each object
+        //prepend to the page in the right order
+  //   }
+  // },
+
   retrieve: function(title, body){
     var retrievedArray = localStorage.getItem('ideasArray');
     JSON.parse(retrievedArray);
     console.log(JSON.parse(retrievedArray));
+  },
+
+  clearListContainer: function() {
+    $('.list-item').empty();
   }
 
 };
