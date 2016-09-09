@@ -10,8 +10,17 @@ $('.save-button').on('click', function(){
   AllIdeas.addStoreToArray(idea);
   AllIdeas.render(idea);
   AllIdeas.retrieve();
-
 });
+
+$('.list-container').on('click', '.downvote', function(){
+  Idea.prototype.qualityDown();
+});
+
+$('.list-container').on('click', '.upvote', function(){
+  Idea.prototype.qualityUp();
+});
+
+
 
 function Idea(title, body, id, quality) {
   this.title = title;
@@ -22,17 +31,22 @@ function Idea(title, body, id, quality) {
 
 
 Idea.prototype.qualityUp = function() {
-  var upQuality = {'swill':'plausible', 'plausible': 'genius', 'genius': 'genius'};
-  //when quality up button is clicked, look at position of quality in array
-  //and move by one in the array
-  this.quality = upQuality[this.quality];
-
+  if ($('.quality-value').text() === 'swill') {
+      $('.quality-value').text('plausible');
+  } else {
+      $('.quality-value').text('genius');
+  }
 };
 
 Idea.prototype.qualityDown = function() {
-  var qualities = ['swill', 'plausible', 'genius'];
-  //when quality down button is clicked, look at position in the array
-  //move down by 1 if in position 1 or 2 in the array
+  if ($('.quality-value').text('genius')) {
+     $('.quality-value').text('plausible');
+  }
+  if ($('.quality-value').text('plausible')) {
+     $('.quality-value').text('swill');
+  } else {
+    return false;
+  }
 };
 
 var ideasArray = [];
@@ -51,11 +65,10 @@ var AllIdeas = {
   },
 
   render: function(idea) {
-    $('.list-container').prepend('<div class="list-item' + " " + idea.id + '"><li class="title-style"><input value=' + idea.title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + idea.body + '></li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
+    $('.list-container').prepend('<div class="list-item' + " " + idea.id + '"><li class="title-style"><input value=' + idea.title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + idea.body + '></li><img class="downvote" src="icons/downvote.svg" height="20" width="20"><img class="upvote" src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div>');
   },
 
   renderStorage: function() {
-    debugger;
     //before we use ideasArray, check localStorage and make sure ideasArray matches
     for (var i = 0; i < ideasArray.length; i++) {
      //iterate through the ideasArray array.
