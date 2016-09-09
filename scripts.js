@@ -13,18 +13,25 @@ $('.save-button').on('click', function(){
 
 });
 
-function getUserInput(){
-  $('.title').val();
-  $('.body').val();
-}
-
-
-function Idea(title, body, id) {
+function Idea(title, body, id, quality) {
   this.title = title;
   this.body = body;
-  this.id = Date.now();
-  this.quality = 'swill';
+  this.id = id || Date.now();
+  this.quality = quality || 'swill';
 }
+
+var qualties = ['swill', 'plausible', 'genius'];
+
+Idea.prototype.qualityUp = function() {
+  //when quality up button is clicked, look at position of quality in array
+  //and move by one in the array
+
+};
+
+Idea.prototype.qualityDown = function() {
+  //when quality down button is clicked, look at position in the array
+  //move down by 1 if in position 1 or 2 in the array
+};
 
 var ideasArray = [];
 
@@ -72,6 +79,10 @@ var AllIdeas = {
 
   clearListContainer: function() {
     $('.list-item').empty();
-  }
+  },
+
+  remove: function() {},
+  find: function() {}
+
 
 };
