@@ -6,9 +6,9 @@ $(document).ready(function(){
 $('.save-button').on('click', function(){
   var title = $('.title').val();
   var body = $('.body').val();
-  AllIdeas.render(title, body);
-  AllIdeas.addToArray(title, body);
-  AllIdeas.store();
+  var idea = new Idea(title, body);
+  AllIdeas.addStoreToArray(idea);
+  AllIdeas.render(idea);
   AllIdeas.retrieve();
 
 });
@@ -20,15 +20,17 @@ function Idea(title, body, id, quality) {
   this.quality = quality || 'swill';
 }
 
-var qualties = ['swill', 'plausible', 'genius'];
 
 Idea.prototype.qualityUp = function() {
+  var upQuality = {'swill':'plausible', 'plausible': 'genius', 'genius': 'genius'};
   //when quality up button is clicked, look at position of quality in array
   //and move by one in the array
+  this.quality = upQuality[this.quality];
 
 };
 
 Idea.prototype.qualityDown = function() {
+  var qualities = ['swill', 'plausible', 'genius'];
   //when quality down button is clicked, look at position in the array
   //move down by 1 if in position 1 or 2 in the array
 };
@@ -37,19 +39,19 @@ var ideasArray = [];
 
 var AllIdeas = {
 
-  addToArray: function(title, body){
-    ideasArray.push(new Idea(title, body));
+  addStoreToArray: function(idea){
+    ideasArray.push(idea);
     this.store();
     console.log(ideasArray);
-    console.log(title);
+    console.log(idea.title);
   },
 
   store: function () {
     localStorage.setItem('ideasArray', JSON.stringify(ideasArray));
   },
 
-  render: function(title, body, id) {
-    $('.list-container').prepend('<div class="list-item' + " " + id + '"><li class="title-style"><input value=' + title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + body + '></li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
+  render: function(idea) {
+    $('.list-container').prepend('<div class="list-item' + " " + idea.id + '"><li class="title-style"><input value=' + idea.title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + idea.body + '></li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
   },
 
   renderStorage: function() {
@@ -59,16 +61,13 @@ var AllIdeas = {
      //iterate through the ideasArray array.
         //identify the individual titles, body, id, buttons, and quality for each object
         //prepend to the page in the right order
+        var object = ideasArray[i];
+        var idea = new Idea(object.title, object.body, object.id, object.quality);
+        ideasArray[i] = idea;
+      this.render(idea);
+    }
+  },
 
-        var title = ideasArray[i].title;
-        var body = ideasArray[i].body;
-        var id = ideasArray[i].id;
-        var quality = ideasArray[i].quality;
-        console.log(title);
-
-        $('.list-container').prepend('<div class="list-item' + " " + id + '"><li class="title-style"><input value=' + title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + body + '></li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
-      }
-    },
 
   retrieve: function(title, body){
     if (localStorage.ideasArray) {
