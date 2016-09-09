@@ -29,10 +29,11 @@ function Idea(title, body, id, quality) {
   this.quality = quality || 'swill';
 }
 
-
 Idea.prototype.qualityUp = function() {
+  var quality = $('.quality-value').text();
   if ($('.quality-value').text() === 'swill') {
       $('.quality-value').text('plausible');
+      // quality = //fill this in;
   } else {
       $('.quality-value').text('genius');
   }
