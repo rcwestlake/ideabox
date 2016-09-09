@@ -30,7 +30,7 @@ h1 span {
   flex-direction: column;
   flex-wrap: wrap;
   font-size: 40px;
-  padding-top: 15px;
+  padding-top: 20px;
   width: 100%;
 }
 
@@ -44,6 +44,7 @@ h1 span {
 .title, .body, .save-button {
   width: 100%;
   margin-bottom: 10px;
+  padding-left: 8px;
 }
 
 .title, .body {
@@ -78,6 +79,7 @@ h1 span {
   font-size: 20px;
   border: 2px solid lightgrey;
   margin-bottom: 25px;
+  padding-left: 8px;
   width: 60vw;
 
 }
