@@ -48,13 +48,14 @@ Idea.prototype.qualityUp = function () {
   switch (quality) {
     case 'swill':
       this.quality = 'plausible';
+      AllIdeas.store();
       return $('.quality-value').text(this.quality);
     case 'plausible':
       this.quality = 'genius';
+      AllIdeas.store();
       return $('.quality-value').text(this.quality);
     default:
   }
-  AllIdeas.store();
 };
 
 Idea.prototype.qualityDown = function() {
@@ -62,9 +63,11 @@ Idea.prototype.qualityDown = function() {
   switch (quality) {
     case 'genius':
       this.quality = 'plausible';
+      AllIdeas.store();
       return $('.quality-value').text(this.quality);
     case 'plausible':
       this.quality = 'swill';
+      AllIdeas.store();
       return $('.quality-value').text(this.quality);
     default:
   }
@@ -85,6 +88,10 @@ var AllIdeas = {
   store: function () {
     localStorage.setItem('ideasArray', JSON.stringify(ideasArray));
   },
+
+  // storeIdea: function() {
+  //   localStorage.setItem('idea', JSON.stringify(idea));
+  // },
 
   render: function(idea) {
     $('.list-container').prepend('<div class="list-item"' + 'id="' + idea.id + '"><li class="title-style"><input value=' + idea.title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + idea.body + '></li><img class="downvote" src="icons/downvote.svg" height="20" width="20"><img class="upvote" src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div>');
