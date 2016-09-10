@@ -9,8 +9,9 @@ $('.save-button').on('click', function(){
   var idea = new Idea(title, body);
   AllIdeas.addStoreToArray(idea);
   AllIdeas.retrieve();
-  AllIdeas.render(idea);
-  // AllIdeas.renderStorage();
+  // AllIdeas.render(idea);
+  AllIdeas.clearListContainer();
+  AllIdeas.renderStorage();
 });
 
 $('.list-container').on('click', '.downvote', function(){
@@ -82,11 +83,11 @@ var AllIdeas = {
     ideasArray.push(idea);
     this.store();
     console.log(ideasArray);
-    console.log(idea.title);
   },
 
   store: function () {
     localStorage.setItem('ideasArray', JSON.stringify(ideasArray));
+    console.log(localStorage.setItem('ideasArray', JSON.stringify(ideasArray)));
   },
 
   // storeIdea: function() {
@@ -118,7 +119,7 @@ var AllIdeas = {
   },
 
   clearListContainer: function() {
-    $('.list-item').empty();
+    $('.list-item').remove();
   },
 
   find: function(id) {
