@@ -8,24 +8,32 @@ $('.save-button').on('click', function(){
   var body = $('.body').val();
   var idea = new Idea(title, body);
   AllIdeas.addStoreToArray(idea);
-  AllIdeas.render(idea);
   AllIdeas.retrieve();
+  AllIdeas.render(idea);
+  // AllIdeas.renderStorage();
 });
 
 $('.list-container').on('click', '.downvote', function(){
-    qualityDown();
-    AllIdeas.addStoreToArray();
-    AllIdeas.clearListContainer();
-    AllIdeas.renderStorage();
+  var id = $(this).parents('.list-item').attr('id');
+  // var title = $('.title').val();
+  // var body = $('.body').val();
+  // var idea = new Idea(title, body, id);
+  AllIdeas.find(id).qualityDown();
+  // AllIdeas.addStoreToArray();
+  // AllIdeas.clearListContainer();
+  // AllIdeas.renderStorage();
 });
 
 $('.list-container').on('click', '.upvote', function(){
-    qualityUp();
-    AllIdeas.addStoreToArray();
-    AllIdeas.clearListContainer();
-    AllIdeas.renderStorage();
+  var id = $(this).parents('.list-item').attr('id');
+  // var title = $('.title').val();
+  // var body = $('.body').val();
+  // var idea = new Idea(title, body);
+  AllIdeas.find(id).qualityUp();
+  // AllIdeas.addStoreToArray();
+  // AllIdeas.clearListContainer();
+  // AllIdeas.rendexrStorage();
 });
-
 
 
 function Idea(title, body, id, quality) {
@@ -35,31 +43,33 @@ function Idea(title, body, id, quality) {
   this.quality = quality || 'swill';
 }
 
-function qualityUp() {
-  var quality = $('.quality-value').text();
+Idea.prototype.qualityUp = function () {
+  var quality = this.quality;
   switch (quality) {
     case 'swill':
-      quality = $('.quality-value').text('plausible');
-      return $('.quality-value').text('plausible');
+      this.quality = 'plausible';
+      return $('.quality-value').text(this.quality);
     case 'plausible':
-      quality = $('.quality-value').text('genius');
-      return $('.quality-value').text('genius');
+      this.quality = 'genius';
+      return $('.quality-value').text(this.quality);
     default:
   }
-}
+  AllIdeas.store();
+};
 
-function qualityDown() {
-  var quality = $('.quality-value').text();
+Idea.prototype.qualityDown = function() {
+  var quality = this.quality;
   switch (quality) {
     case 'genius':
-      quality = $('.quality-value').text('plausible');
-      return $('.quality-value').text('plausible');
+      this.quality = 'plausible';
+      return $('.quality-value').text(this.quality);
     case 'plausible':
-      quality = $('.quality-value').text('swill');
-      return $('.quality-value').text('swill');
+      this.quality = 'swill';
+      return $('.quality-value').text(this.quality);
     default:
   }
-}
+  AllIdeas.store();
+};
 
 var ideasArray = [];
 
@@ -93,7 +103,6 @@ var AllIdeas = {
     }
   },
 
-
   retrieve: function(title, body){
     if (localStorage.ideasArray) {
       var retrievedArray = localStorage.getItem('ideasArray');
@@ -105,8 +114,15 @@ var AllIdeas = {
     $('.list-item').empty();
   },
 
-  remove: function() {},
-  find: function() {}
+  find: function(id) {
+    id = parseInt(id);
+    return ideasArray.find(function (idea) {
+      return idea.id === id;
+    });
+  },
+
+  remove: function() {}
+
 
 
 };
