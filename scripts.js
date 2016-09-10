@@ -13,11 +13,17 @@ $('.save-button').on('click', function(){
 });
 
 $('.list-container').on('click', '.downvote', function(){
-  Idea.prototype.qualityDown();
+    qualityDown();
+    AllIdeas.addStoreToArray();
+    AllIdeas.clearListContainer();
+    AllIdeas.renderStorage();
 });
 
 $('.list-container').on('click', '.upvote', function(){
-  Idea.prototype.qualityUp();
+    qualityUp();
+    AllIdeas.addStoreToArray();
+    AllIdeas.clearListContainer();
+    AllIdeas.renderStorage();
 });
 
 
@@ -29,26 +35,31 @@ function Idea(title, body, id, quality) {
   this.quality = quality || 'swill';
 }
 
-Idea.prototype.qualityUp = function() {
+function qualityUp() {
   var quality = $('.quality-value').text();
-  if ($('.quality-value').text() === 'swill') {
-      $('.quality-value').text('plausible');
-      // quality = //fill this in;
-  } else {
-      $('.quality-value').text('genius');
+  switch (quality) {
+    case 'swill':
+      quality = $('.quality-value').text('plausible');
+      return $('.quality-value').text('plausible');
+    case 'plausible':
+      quality = $('.quality-value').text('genius');
+      return $('.quality-value').text('genius');
+    default:
   }
-};
+}
 
-Idea.prototype.qualityDown = function() {
-  if ($('.quality-value').text('genius')) {
-     $('.quality-value').text('plausible');
+function qualityDown() {
+  var quality = $('.quality-value').text();
+  switch (quality) {
+    case 'genius':
+      quality = $('.quality-value').text('plausible');
+      return $('.quality-value').text('plausible');
+    case 'plausible':
+      quality = $('.quality-value').text('swill');
+      return $('.quality-value').text('swill');
+    default:
   }
-  if ($('.quality-value').text('plausible')) {
-     $('.quality-value').text('swill');
-  } else {
-    return false;
-  }
-};
+}
 
 var ideasArray = [];
 
@@ -66,7 +77,7 @@ var AllIdeas = {
   },
 
   render: function(idea) {
-    $('.list-container').prepend('<div class="list-item' + " " + idea.id + '"><li class="title-style"><input value=' + idea.title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + idea.body + '></li><img class="downvote" src="icons/downvote.svg" height="20" width="20"><img class="upvote" src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div>');
+    $('.list-container').prepend('<div class="list-item"' + 'id="' + idea.id + '"><li class="title-style"><input value=' + idea.title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + idea.body + '></li><img class="downvote" src="icons/downvote.svg" height="20" width="20"><img class="upvote" src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div>');
   },
 
   renderStorage: function() {
