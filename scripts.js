@@ -14,11 +14,13 @@ $('.save-button').on('click', function(){
 });
 
 $('.list-container').on('click', '.downvote', function(){
-  var id = $(this).parents('.list-item').attr('id');
+  var id = $(this).parent('.list-item').attr('id');
   // var title = $('.title').val();
   // var body = $('.body').val();
   // var idea = new Idea(title, body, id);
   AllIdeas.find(id).qualityDown();
+  AllIdeas.clearListContainer();
+  AllIdeas.renderStorage();
   // AllIdeas.addStoreToArray();
   // AllIdeas.clearListContainer();
   // AllIdeas.renderStorage();
@@ -30,6 +32,11 @@ $('.list-container').on('click', '.upvote', function(){
   // var body = $('.body').val();
   // var idea = new Idea(title, body);
   AllIdeas.find(id).qualityUp();
+  AllIdeas.clearListContainer();
+  AllIdeas.renderStorage();
+  // debugger;
+  // AllIdeas.store();
+  // $(this).parent().children('.quality').children().text(this.quality);
   // AllIdeas.addStoreToArray();
   // AllIdeas.clearListContainer();
   // AllIdeas.rendexrStorage();
@@ -45,15 +52,15 @@ function Idea(title, body, id, quality) {
 
 Idea.prototype.qualityUp = function () {
   var quality = this.quality;
+  var id = this.id;
+
   switch (quality) {
     case 'swill':
       this.quality = 'plausible';
-      AllIdeas.store();
-      return $('.quality-value').text(this.quality);
+      return AllIdeas.store();
     case 'plausible':
       this.quality = 'genius';
-      AllIdeas.store();
-      return $('.quality-value').text(this.quality);
+      return AllIdeas.store();
     default:
   }
 };
@@ -63,12 +70,10 @@ Idea.prototype.qualityDown = function() {
   switch (quality) {
     case 'genius':
       this.quality = 'plausible';
-      AllIdeas.store();
-      return $('.quality-value').text(this.quality);
+      return AllIdeas.store();
     case 'plausible':
       this.quality = 'swill';
-      AllIdeas.store();
-      return $('.quality-value').text(this.quality);
+      return AllIdeas.store();
     default:
   }
   AllIdeas.store();
