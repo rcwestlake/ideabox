@@ -145,6 +145,10 @@ li {
   padding: 0 14px;
 }
 
+button:focus {
+  outline:none;
+}
+
 .remove-button{
   background: url(icons/delete.svg) no-repeat;
   border: none;

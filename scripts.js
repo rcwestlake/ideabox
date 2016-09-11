@@ -14,14 +14,14 @@ $('.save-button').on('click', function(){
 });
 
 $('.list-container').on('click', '.downvote', function(){
-  var id = $(this).parent('.list-item').attr('id');
+  var id = $(this).parent().parent().attr('id');
   AllIdeas.find(id).qualityDown();
   AllIdeas.clearListContainer();
   AllIdeas.renderStorage();
 });
 
 $('.list-container').on('click', '.upvote', function(){
-  var id = $(this).parent('.list-item').attr('id');
+  var id = $(this).parent().parent().attr('id');
   AllIdeas.find(id).qualityUp();
   AllIdeas.clearListContainer();
   AllIdeas.renderStorage();
