@@ -3,25 +3,41 @@ $(document).ready(function(){
   AllIdeas.renderStorage();
 });
 
+// $('.save-button').on('click', function(){
+//   var title = $('.title').val();
+//   var body = $('.body').val();
+//   var idea = new Idea(title, body);
+//   AllIdeas.addStoreToArray(idea);
+//   AllIdeas.retrieve();
+//   AllIdeas.clearListContainer();
+//   AllIdeas.renderStorage();
+// });
+
 $('.save-button').on('click', function(){
-  var title = $('.title').val();
-  var body = $('.body').val();
-  var idea = new Idea(title, body);
-  AllIdeas.addStoreToArray(idea);
-  AllIdeas.retrieve();
-  AllIdeas.clearListContainer();
-  AllIdeas.renderStorage();
+ var title = $('.title').val();
+ var body = $('.body').val();
+ var idea = new Idea(title, body);
+ if (title === '' || body === '') {
+   displayErrorMessage('inputBlanks');
+ } else {
+ AllIdeas.addStoreToArray(idea);
+ AllIdeas.retrieve();
+ AllIdeas.clearListContainer();
+ AllIdeas.renderStorage();
+ displayErrorMessage();
+ clearInputFields();
+ }
 });
 
 $('.list-container').on('click', '.downvote', function(){
-  var id = $(this).parent('.list-item').attr('id');
+  var id = $(this).parent().parent().attr('id');
   AllIdeas.find(id).qualityDown();
   AllIdeas.clearListContainer();
   AllIdeas.renderStorage();
 });
 
 $('.list-container').on('click', '.upvote', function(){
-  var id = $(this).parent('.list-item').attr('id');
+  var id = $(this).parent().parent().attr('id');
   AllIdeas.find(id).qualityUp();
   AllIdeas.clearListContainer();
   AllIdeas.renderStorage();
@@ -62,6 +78,21 @@ function Idea(title, body, id, quality) {
   this.body = body;
   this.id = id || Date.now();
   this.quality = quality || 'swill';
+}
+
+function displayErrorMessage(errorType) {
+ switch (errorType) {
+   case 'inputBlanks':
+     $('.message-to-user').text('An input field is empty. Please fill in both fields.');
+     break;
+   default:
+     $('.message-to-user').text('');
+ }
+}
+
+function clearInputFields() {
+ $('.title').val('');
+ $('.body').val('');
 }
 
 Idea.prototype.qualityUp = function () {
@@ -132,7 +163,7 @@ var AllIdeas = {
   },
 
   render: function(idea) {
-    $('.list-container').prepend('<div class="list-item"' + 'id="' + idea.id + '"><img class="remove-button" src="icons/delete.svg" height="20" width="20"><li class="title-style"><p class="new-title-input" contenteditable="true">' + idea.title + '</p></li><li class="body-style"><p class="new-body-input" contenteditable="true">' + idea.body + '</p></li><img class="downvote" src="icons/downvote.svg" height="20" width="20"><img class="upvote" src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div>');
+    $('.list-container').prepend('<div class="list-item"' + 'id="' + idea.id + '"><li class="title-style"><p class="new-title-input" contenteditable="true">' + idea.title + '</p><button type="button" class="remove-button btn" ></button></li><li class="body-style"><p class="new-body-input" contenteditable="true">' + idea.body + '</p></li><div class="quality-style"><button type="button" class="upvote btn"></button><button type="button" class="downvote btn"></button><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div></div>');
   },
 
   renderStorage: function() {
