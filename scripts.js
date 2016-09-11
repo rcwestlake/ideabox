@@ -35,24 +35,26 @@ $('.list-container').on('click', '.remove-button', function(){
   AllIdeas.renderStorage();
 });
 
-Idea.prototype.remove = function(id) {
-  id = parseInt(id);
-  ideasArray = ideasArray.filter(function (r) {
-    return r.id !== id;
-  });
-  AllIdeas.store();
-};
-
 $('.list-container').on('keyup', '.new-title-input', function () {
   var id = $(this).parent().parent().attr('id');
-  var newTitle = $('.new-title-input').val();
+  var newTitle = $(this).text();
   AllIdeas.changeTitle(id, newTitle);
 });
 
 $('.list-container').on('keyup', '.new-body-input', function () {
   var id = $(this).parent().parent().attr('id');
-  var newBody = $('.new-body-input').val();
+  var newBody = $(this).text();
   AllIdeas.changeBody(id, newBody);
+});
+
+$('.search').on('keyup', function(){
+  var $ideaslist = $('.list-container div');
+  var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+  $ideaslist.show().filter(function() {
+    var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+    return !~text.indexOf(val);
+  }).hide();
 });
 
 function Idea(title, body, id, quality) {
@@ -77,8 +79,6 @@ Idea.prototype.qualityUp = function () {
   }
 };
 
-
-
 Idea.prototype.qualityDown = function() {
   var quality = this.quality;
   switch (quality) {
@@ -92,6 +92,15 @@ Idea.prototype.qualityDown = function() {
   }
   AllIdeas.store();
 };
+
+Idea.prototype.remove = function(id) {
+  id = parseInt(id);
+  ideasArray = ideasArray.filter(function (r) {
+    return r.id !== id;
+  });
+  AllIdeas.store();
+};
+
 
 var ideasArray = [];
 
@@ -123,7 +132,7 @@ var AllIdeas = {
   },
 
   render: function(idea) {
-    $('.list-container').prepend('<div class="list-item"' + 'id="' + idea.id + '"><li class="title-style"><input class="new-title-input" value="' + idea.title + '"><img class="remove-button" src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input class="new-body-input" value="' + idea.body + '"></li><img class="downvote" src="icons/downvote.svg" height="20" width="20"><img class="upvote" src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div>');
+    $('.list-container').prepend('<div class="list-item"' + 'id="' + idea.id + '"><img class="remove-button" src="icons/delete.svg" height="20" width="20"><li class="title-style"><p class="new-title-input" contenteditable="true">' + idea.title + '</p></li><li class="body-style"><p class="new-body-input" contenteditable="true">' + idea.body + '</p></li><img class="downvote" src="icons/downvote.svg" height="20" width="20"><img class="upvote" src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div>');
   },
 
   renderStorage: function() {
@@ -152,5 +161,4 @@ var AllIdeas = {
       return idea.id === id;
     });
   }
-
 };
