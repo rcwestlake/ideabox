@@ -43,6 +43,17 @@ Idea.prototype.remove = function(id) {
   AllIdeas.store();
 };
 
+$('.list-container').on('keyup', '.new-title-input', function () {
+  var id = $(this).parent().parent().attr('id');
+  var newTitle = $('.new-title-input').val();
+  AllIdeas.changeTitle(id, newTitle);
+});
+
+$('.list-container').on('keyup', '.new-body-input', function () {
+  var id = $(this).parent().parent().attr('id');
+  var newBody = $('.new-body-input').val();
+  AllIdeas.changeBody(id, newBody);
+});
 
 function Idea(title, body, id, quality) {
   this.title = title;
@@ -65,6 +76,8 @@ Idea.prototype.qualityUp = function () {
     default:
   }
 };
+
+
 
 Idea.prototype.qualityDown = function() {
   var quality = this.quality;
@@ -90,13 +103,27 @@ var AllIdeas = {
     console.log(ideasArray);
   },
 
+  changeTitle: function(id, newTitle){
+    id = parseInt(id);
+    var idea = this.find(id);
+    idea.title = newTitle;
+    this.store();
+  },
+
+  changeBody: function(id, newBody){
+    id = parseInt(id);
+    var idea = this.find(id);
+    idea.body = newBody;
+    this.store();
+  },
+
   store: function () {
     localStorage.setItem('ideasArray', JSON.stringify(ideasArray));
     console.log(localStorage.setItem('ideasArray', JSON.stringify(ideasArray)));
   },
 
   render: function(idea) {
-    $('.list-container').prepend('<div class="list-item"' + 'id="' + idea.id + '"><li class="title-style"><input value=' + idea.title + '><img class="remove-button" src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + idea.body + '></li><img class="downvote" src="icons/downvote.svg" height="20" width="20"><img class="upvote" src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div>');
+    $('.list-container').prepend('<div class="list-item"' + 'id="' + idea.id + '"><li class="title-style"><input class="new-title-input" value="' + idea.title + '"><img class="remove-button" src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input class="new-body-input" value="' + idea.body + '"></li><img class="downvote" src="icons/downvote.svg" height="20" width="20"><img class="upvote" src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div>');
   },
 
   renderStorage: function() {
