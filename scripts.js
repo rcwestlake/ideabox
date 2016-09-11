@@ -3,14 +3,30 @@ $(document).ready(function(){
   AllIdeas.renderStorage();
 });
 
+// $('.save-button').on('click', function(){
+//   var title = $('.title').val();
+//   var body = $('.body').val();
+//   var idea = new Idea(title, body);
+//   AllIdeas.addStoreToArray(idea);
+//   AllIdeas.retrieve();
+//   AllIdeas.clearListContainer();
+//   AllIdeas.renderStorage();
+// });
+
 $('.save-button').on('click', function(){
-  var title = $('.title').val();
-  var body = $('.body').val();
-  var idea = new Idea(title, body);
-  AllIdeas.addStoreToArray(idea);
-  AllIdeas.retrieve();
-  AllIdeas.clearListContainer();
-  AllIdeas.renderStorage();
+ var title = $('.title').val();
+ var body = $('.body').val();
+ var idea = new Idea(title, body);
+ if (title === '' || body === '') {
+   displayErrorMessage('inputBlanks');
+ } else {
+ AllIdeas.addStoreToArray(idea);
+ AllIdeas.retrieve();
+ AllIdeas.clearListContainer();
+ AllIdeas.renderStorage();
+ displayErrorMessage();
+ clearInputFields();
+ }
 });
 
 $('.list-container').on('click', '.downvote', function(){
@@ -62,6 +78,21 @@ function Idea(title, body, id, quality) {
   this.body = body;
   this.id = id || Date.now();
   this.quality = quality || 'swill';
+}
+
+function displayErrorMessage(errorType) {
+ switch (errorType) {
+   case 'inputBlanks':
+     $('.message-to-user').text('An input field is empty. Please fill in both fields.');
+     break;
+   default:
+     $('.message-to-user').text('');
+ }
+}
+
+function clearInputFields() {
+ $('.title').val('');
+ $('.body').val('');
 }
 
 Idea.prototype.qualityUp = function () {

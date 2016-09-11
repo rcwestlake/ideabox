@@ -87,7 +87,10 @@ li {
   width: 60vw;
 }
 
-
+.message-to-user {
+  font-size: 15px;
+  text-align: center;
+}
 
 .new-body-input {
   color: #939598;
