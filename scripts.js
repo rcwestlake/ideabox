@@ -6,62 +6,143 @@ $(document).ready(function(){
 $('.save-button').on('click', function(){
   var title = $('.title').val();
   var body = $('.body').val();
-  AllIdeas.render(title, body);
-  AllIdeas.addToArray(title, body);
-  AllIdeas.store();
+  var idea = new Idea(title, body);
+  AllIdeas.addStoreToArray(idea);
   AllIdeas.retrieve();
-
+  AllIdeas.clearListContainer();
+  AllIdeas.renderStorage();
 });
 
-function getUserInput(){
-  $('.title').val();
-  $('.body').val();
-}
+$('.list-container').on('click', '.downvote', function(){
+  var id = $(this).parent('.list-item').attr('id');
+  AllIdeas.find(id).qualityDown();
+  AllIdeas.clearListContainer();
+  AllIdeas.renderStorage();
+});
 
+$('.list-container').on('click', '.upvote', function(){
+  var id = $(this).parent('.list-item').attr('id');
+  AllIdeas.find(id).qualityUp();
+  AllIdeas.clearListContainer();
+  AllIdeas.renderStorage();
+});
 
-function Idea(title, body, id) {
+$('.list-container').on('click', '.remove-button', function(){
+  console.log('test');
+  var id = $(this).parent().parent().attr('id');
+  AllIdeas.find(id).remove(id);
+  AllIdeas.clearListContainer();
+  AllIdeas.renderStorage();
+});
+
+$('.list-container').on('keyup', '.new-title-input', function () {
+  var id = $(this).parent().parent().attr('id');
+  var newTitle = $(this).text();
+  AllIdeas.changeTitle(id, newTitle);
+});
+
+$('.list-container').on('keyup', '.new-body-input', function () {
+  var id = $(this).parent().parent().attr('id');
+  var newBody = $(this).text();
+  AllIdeas.changeBody(id, newBody);
+});
+
+$('.search').on('keyup', function(){
+  var $ideaslist = $('.list-container div');
+  var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+  $ideaslist.show().filter(function() {
+    var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+    return !~text.indexOf(val);
+  }).hide();
+});
+
+function Idea(title, body, id, quality) {
   this.title = title;
   this.body = body;
-  this.id = Date.now();
-  this.quality = 'swill';
+  this.id = id || Date.now();
+  this.quality = quality || 'swill';
 }
+
+Idea.prototype.qualityUp = function () {
+  var quality = this.quality;
+  var id = this.id;
+
+  switch (quality) {
+    case 'swill':
+      this.quality = 'plausible';
+      return AllIdeas.store();
+    case 'plausible':
+      this.quality = 'genius';
+      return AllIdeas.store();
+    default:
+  }
+};
+
+Idea.prototype.qualityDown = function() {
+  var quality = this.quality;
+  switch (quality) {
+    case 'genius':
+      this.quality = 'plausible';
+      return AllIdeas.store();
+    case 'plausible':
+      this.quality = 'swill';
+      return AllIdeas.store();
+    default:
+  }
+  AllIdeas.store();
+};
+
+Idea.prototype.remove = function(id) {
+  id = parseInt(id);
+  ideasArray = ideasArray.filter(function (r) {
+    return r.id !== id;
+  });
+  AllIdeas.store();
+};
+
 
 var ideasArray = [];
 
 var AllIdeas = {
 
-  addToArray: function(title, body){
-    ideasArray.push(new Idea(title, body));
+  addStoreToArray: function(idea){
+    ideasArray.push(idea);
     this.store();
     console.log(ideasArray);
-    console.log(title);
+  },
+
+  changeTitle: function(id, newTitle){
+    id = parseInt(id);
+    var idea = this.find(id);
+    idea.title = newTitle;
+    this.store();
+  },
+
+  changeBody: function(id, newBody){
+    id = parseInt(id);
+    var idea = this.find(id);
+    idea.body = newBody;
+    this.store();
   },
 
   store: function () {
     localStorage.setItem('ideasArray', JSON.stringify(ideasArray));
+    console.log(localStorage.setItem('ideasArray', JSON.stringify(ideasArray)));
   },
 
-  render: function(title, body, id) {
-    $('.list-container').prepend('<div class="list-item' + " " + id + '"><li class="title-style"><input value=' + title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + body + '></li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
+  render: function(idea) {
+    $('.list-container').prepend('<div class="list-item"' + 'id="' + idea.id + '"><img class="remove-button" src="icons/delete.svg" height="20" width="20"><li class="title-style"><p class="new-title-input" contenteditable="true">' + idea.title + '</p></li><li class="body-style"><p class="new-body-input" contenteditable="true">' + idea.body + '</p></li><img class="downvote" src="icons/downvote.svg" height="20" width="20"><img class="upvote" src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div>');
   },
 
   renderStorage: function() {
-    debugger;
-    //before we use ideasArray, check localStorage and make sure ideasArray matches
     for (var i = 0; i < ideasArray.length; i++) {
-     //iterate through the ideasArray array.
-        //identify the individual titles, body, id, buttons, and quality for each object
-        //prepend to the page in the right order
-
-        var title = ideasArray[i].title;
-        var body = ideasArray[i].body;
-        var id = ideasArray[i].id;
-        var quality = ideasArray[i].quality;
-        console.log(title);
-
-        $('.list-container').prepend('<div class="list-item' + " " + id + '"><li class="title-style"><input value=' + title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + body + '></li><img src="icons/downvote.svg" height="20" width="20"><img src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: </p>');
-      }
-    },
+        var object = ideasArray[i];
+        var idea = new Idea(object.title, object.body, object.id, object.quality);
+        ideasArray[i] = idea;
+      this.render(idea);
+    }
+  },
 
   retrieve: function(title, body){
     if (localStorage.ideasArray) {
@@ -71,7 +152,13 @@ var AllIdeas = {
   },
 
   clearListContainer: function() {
-    $('.list-item').empty();
-  }
+    $('.list-item').remove();
+  },
 
+  find: function(id) {
+    id = parseInt(id);
+    return ideasArray.find(function (idea) {
+      return idea.id === id;
+    });
+  }
 };

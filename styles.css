@@ -22,6 +22,10 @@ h1 span {
   color: #6d6e71;
 }
 
+li {
+  list-style-type: none;
+}
+
 .header-container {
   background-color: #e5f3f2;
   display: flex;
@@ -81,7 +85,6 @@ h1 span {
   margin-bottom: 25px;
   padding-left: 8px;
   width: 60vw;
-
 }
 
 
