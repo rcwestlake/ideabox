@@ -15,32 +15,33 @@ $('.save-button').on('click', function(){
 
 $('.list-container').on('click', '.downvote', function(){
   var id = $(this).parent('.list-item').attr('id');
-  // var title = $('.title').val();
-  // var body = $('.body').val();
-  // var idea = new Idea(title, body, id);
   AllIdeas.find(id).qualityDown();
   AllIdeas.clearListContainer();
   AllIdeas.renderStorage();
-  // AllIdeas.addStoreToArray();
-  // AllIdeas.clearListContainer();
-  // AllIdeas.renderStorage();
 });
 
 $('.list-container').on('click', '.upvote', function(){
-  var id = $(this).parents('.list-item').attr('id');
-  // var title = $('.title').val();
-  // var body = $('.body').val();
-  // var idea = new Idea(title, body);
+  var id = $(this).parent('.list-item').attr('id');
   AllIdeas.find(id).qualityUp();
   AllIdeas.clearListContainer();
   AllIdeas.renderStorage();
-  // debugger;
-  // AllIdeas.store();
-  // $(this).parent().children('.quality').children().text(this.quality);
-  // AllIdeas.addStoreToArray();
-  // AllIdeas.clearListContainer();
-  // AllIdeas.rendexrStorage();
 });
+
+$('.list-container').on('click', '.remove-button', function(){
+  console.log('test');
+  var id = $(this).parent().parent().attr('id');
+  AllIdeas.find(id).remove(id);
+  AllIdeas.clearListContainer();
+  AllIdeas.renderStorage();
+});
+
+Idea.prototype.remove = function(id) {
+  id = parseInt(id);
+  ideasArray = ideasArray.filter(function (r) {
+    return r.id !== id;
+  });
+  AllIdeas.store();
+};
 
 
 function Idea(title, body, id, quality) {
@@ -95,7 +96,7 @@ var AllIdeas = {
   },
 
   render: function(idea) {
-    $('.list-container').prepend('<div class="list-item"' + 'id="' + idea.id + '"><li class="title-style"><input value=' + idea.title + '><img src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + idea.body + '></li><img class="downvote" src="icons/downvote.svg" height="20" width="20"><img class="upvote" src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div>');
+    $('.list-container').prepend('<div class="list-item"' + 'id="' + idea.id + '"><li class="title-style"><input value=' + idea.title + '><img class="remove-button" src="icons/delete.svg" height="20" width="20"></li><li class="body-style"><input value=' + idea.body + '></li><img class="downvote" src="icons/downvote.svg" height="20" width="20"><img class="upvote" src="icons/upvote.svg" height="20" width="20"><p class="quality">quality: ' + '<span class="quality-value">' + idea.quality + '</span>' + '</p></div>');
   },
 
   renderStorage: function() {
@@ -123,10 +124,6 @@ var AllIdeas = {
     return ideasArray.find(function (idea) {
       return idea.id === id;
     });
-  },
-
-  remove: function() {}
-
-
+  }
 
 };
