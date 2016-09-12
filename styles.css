@@ -26,6 +26,11 @@ li {
   list-style-type: none;
 }
 
+textarea {
+  resize: none;
+  height: 30px;
+}
+
 .header-container {
   background-color: #e5f3f2;
   display: flex;
@@ -181,4 +186,10 @@ button:focus {
 
 @-ms-viewport{
  width: device-width;
+}
+
+@media screen and (max-width: 550px) {
+  .body {
+    height: 12vh;
+  }
 }
