@@ -3,16 +3,6 @@ $(document).ready(function(){
   AllIdeas.renderStorage();
 });
 
-// $('.save-button').on('click', function(){
-//   var title = $('.title').val();
-//   var body = $('.body').val();
-//   var idea = new Idea(title, body);
-//   AllIdeas.addStoreToArray(idea);
-//   AllIdeas.retrieve();
-//   AllIdeas.clearListContainer();
-//   AllIdeas.renderStorage();
-// });
-
 $('.save-button').on('click', function(){
  var title = $('.title').val();
  var body = $('.body').val();
@@ -44,7 +34,6 @@ $('.list-container').on('click', '.upvote', function(){
 });
 
 $('.list-container').on('click', '.remove-button', function(){
-  console.log('test');
   var id = $(this).parent().parent().attr('id');
   AllIdeas.find(id).remove(id);
   AllIdeas.clearListContainer();
@@ -168,10 +157,10 @@ var AllIdeas = {
 
   renderStorage: function() {
     for (var i = 0; i < ideasArray.length; i++) {
-        var object = ideasArray[i];
-        var idea = new Idea(object.title, object.body, object.id, object.quality);
-        ideasArray[i] = idea;
-      this.render(idea);
+      var object = ideasArray[i];
+      var idea = new Idea(object.title, object.body, object.id, object.quality);
+      ideasArray[i] = idea;
+    this.render(idea);
     }
   },
 
