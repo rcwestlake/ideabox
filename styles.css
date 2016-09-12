@@ -106,9 +106,9 @@ li {
 .list-item {
   display: flex;
   flex-direction: column;
-  width: 60vw;
   margin-bottom: 15px;
   border-bottom: 1px solid #D1D3D4;
+  width: 60vw;
 }
 
 .title-style, .body-style, .quality-style {
@@ -122,8 +122,8 @@ li {
 
 .title-style {
   font-size: 1.3em;
-  margin-bottom: 15px;
   font-family: 'Roboto Slab', serif;
+  margin-bottom: 15px;
 }
 
 .body-style{
@@ -134,8 +134,8 @@ li {
 
 .quality {
   font-size: .9em;
-  padding-left: 8px;
   font-family: 'Roboto Slab', serif;
+  padding-left: 8px;
 }
 
 .quality-value {
